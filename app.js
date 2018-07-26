@@ -35,7 +35,14 @@ switch (comando) {
         console.log(colors.cyan("\n=====================================\n"));
         break;
     case 'actualizar':
-        console.log('Actualiza una tarea pendiente');
+        let actualizado = porHacer.actualizar(argv.descripcion, argv.completado);
+        //console.log(argv.completado);
+        let estadoFinal = (porHacer.obtenerEstadoActividad(argv.completado) ? colors.green('Completada') : colors.red('Pendiente'));
+        //console.log(estadoFinal);
+        if (actualizado)
+            console.log(`Tarea ${argv.descripcion} actualizada como ${estadoFinal}.`);
+        else
+            console.log("La tarea no pudo ser actualizada. Intente de nuevo, por favor.")
         break;
     default:
         console.log('Comando no reconocido');

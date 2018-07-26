@@ -26,6 +26,26 @@ const cargarDB = () => {
     //console.log(listadoPendientes);
 };
 
+const obtenerEstadoActividad = (completado = true) => {
+    let compleString = '' + completado;
+    return !(compleString.toUpperCase() == 'FALSE' || compleString.toUpperCase() == 'NO' || compleString.toUpperCase() == 'PENDIENTE' || compleString.toUpperCase() == 'POR HACER' || compleString.toUpperCase() == 'TODO' || compleString.toUpperCase() == '2DO');
+}
+
+const crear = (descripcion) => {
+    cargarDB();
+
+    let pendiente = {
+        descripcion,
+        completado: false
+    };
+
+    listadoPendientes.push(pendiente);
+    guardarDB()
+        //.then(archivo => console.log(`Actividad: ${pendiente} guardada en archivo: `, colors.green(archivo)))
+        .catch(e => console.log(e));
+    return pendiente;
+};
+
 const getListado = (cuales) => {
     //Llega un arreglo con [pendientes, completadas, todas]
     let tipo = 'Pendientes'; // Por omisión, solo pendientes.
@@ -37,7 +57,7 @@ const getListado = (cuales) => {
     {
         tipo = 'Completadas';
     }
-    //console.log(`Por mostrar: ${cuales}`);
+    //console.log(`Por mostrar: ${tipo}`);
     cargarDB();
     let listadoAMostrar = [];
     switch (tipo) {
@@ -61,22 +81,27 @@ const getListado = (cuales) => {
     return listadoAMostrar;
 };
 
-const crear = (descripcion) => {
+const actualizar = (descripcion, completado = true) => {
     cargarDB();
 
-    let pendiente = {
-        descripcion,
-        completado: false
-    };
+    let index = listadoPendientes.findIndex(tarea => tarea.descripcion === descripcion);
 
-    listadoPendientes.push(pendiente);
-    guardarDB()
-        //.then(archivo => console.log(`Actividad: ${pendiente} guardada en archivo: `, colors.green(archivo)))
-        .catch(e => console.log(e));
-    return pendiente;
-};
+    let estado = obtenerEstadoActividad(completado);
+    //-1 es que no lo encontró.
+    if (index >= 0) {
+        listadoPendientes[index].completado = estado;
+        guardarDB()
+            .catch(err => console.log(err));
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 module.exports = {
     crear,
-    getListado
+    getListado,
+    actualizar,
+    obtenerEstadoActividad
 };
