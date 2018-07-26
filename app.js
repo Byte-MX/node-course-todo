@@ -44,6 +44,22 @@ switch (comando) {
         else
             console.log("La tarea no pudo ser actualizada. Intente de nuevo, por favor.")
         break;
+    case 'borrar':
+        let borrado = porHacer.borrar(argv.descripcion);
+        if (borrado) {
+            console.log(colors.red(`Tarea ${argv.descripcion} borrada.`));
+        } else {
+            console.log(colors.yellow("No se encontró la tarea " + argv.descripcion + ". No se hicieron cambios a la base de datos."));
+        }
+        break;
+    case 'destruir-completamente-toda-la-base-de-datos':
+        let destruccionTotal = porHacer.destruirCompletamenteBaseDeDatos();
+        if (destruccionTotal) {
+            console.log(colors.red("R.I.P. Base de Datos. Espero que la hayas respaldado."));
+        } else {
+            console.log(colors.green("¡Milagro! ¡La base de datos se salvó inexplicablemente!"));
+        }
+        break;
     default:
         console.log('Comando no reconocido');
         break;

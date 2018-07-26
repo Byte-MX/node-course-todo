@@ -30,6 +30,8 @@ const argv = require('yargs')
             describe: 'Muestra todas las tareas (completadas y pendientes).'
         }
     })
+    .command('borrar', 'Borra una tarea de la base de datos', descOpt)
+    .command('destruir-completamente-toda-la-base-de-datos', 'Destruye completamente toda la base de datos')
     .help()
     .argv;
 

@@ -11,7 +11,7 @@ const guardarDB = () => {
         fs.writeFile('db/data.json', data, (err) => {
             if (err) throw new Error('La lista de actividades no se pudo guardar', err); //reject(err); 
             else
-                resolve('Actividad guardada en base de datos.');
+                resolve('Cambio guardado en base de datos.');
         });
     });
 };
@@ -98,10 +98,36 @@ const actualizar = (descripcion, completado = true) => {
     }
 }
 
+const borrar = (descripcion) => {
+    cargarDB();
+    //console.log(descripcion);
+    let longitudOriginal = listadoPendientes.length;
+    listadoPendientes = listadoPendientes.filter(tarea => tarea.descripcion != descripcion);
+    let longitudPostBorrado = listadoPendientes.length;
+    if (longitudOriginal == longitudPostBorrado) // Si coinciden, no se borró nada.
+    {
+        return false;
+    } else {
+        guardarDB()
+            .catch(err => console.log(err));
+        return true;
+    }
+}
+
+const destruirCompletamenteBaseDeDatos = () => {
+    cargarDB();
+    listadoPendientes = [];
+    guardarDB()
+        .catch(err => console.log(err));
+    console.log("Kaput");
+    return true;
+}
 
 module.exports = {
     crear,
     getListado,
     actualizar,
-    obtenerEstadoActividad
+    obtenerEstadoActividad,
+    borrar,
+    destruirCompletamenteBaseDeDatos
 };
