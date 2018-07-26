@@ -15,19 +15,10 @@ switch (comando) {
         let tarea = porHacer.crear(argv.descripcion);
         break;
     case 'listar':
-        let cuales = 'Pendientes'; //default
-        let pendientes = argv.pendientes;
-        //console.log("Pendientes: " + pendientes);
-        let completadas = argv.completadas;
-        //console.log('Completadas: ' + completadas);
-        let todas = argv.todas;
-        //console.log(`Todas: ${todas}`);
-        if (todas || (pendientes && completadas)) {
-            cuales = 'Todas';
-        } else if (completadas && !pendientes) {
-            cuales = 'Completadas';
-        }
-        //console.log(`Por mostrar: ${cuales}`);
+        let cuales = [];
+        cuales.push(argv.pendientes);
+        cuales.push(argv.completadas);
+        cuales.push(argv.todas);
         let listado = porHacer.getListado(cuales);
         console.log(colors.cyan("\n========== Lista de tareas ==========\n"));
         if (listado.length == 0) {
