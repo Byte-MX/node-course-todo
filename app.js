@@ -8,11 +8,22 @@ const porHacer = require('./por-hacer/por-hacer');
 
 let comando = argv._[0];
 //console.log(argv);
+/*
+ * Asignación extra agregada por mí porque si no, el actualizar no funciona: 
+ */
+let descripcion = argv.descripcion;
+if (!descripcion) {
+    descripcion = argv.d;
+}
+/*
+ * Fin de asignación extra. 
+ */
 
 switch (comando) {
 
     case 'crear':
-        let tarea = porHacer.crear(argv.descripcion);
+        //console.log(argv);
+        let tarea = porHacer.crear(descripcion);
         break;
     case 'listar':
         let cuales = [];
@@ -35,12 +46,27 @@ switch (comando) {
         console.log(colors.cyan("\n=====================================\n"));
         break;
     case 'actualizar':
-        let actualizado = porHacer.actualizar(argv.descripcion, argv.completado);
-        //console.log(argv.completado);
-        let estadoFinal = (porHacer.obtenerEstadoActividad(argv.completado) ? colors.green('Completada') : colors.red('Pendiente'));
+        //console.log(argv);
+        //console.log(argv.descripcion);
+        // console.log(argv.completado);
+        /*
+         * Asignación extra agregada por mí porque si no, el actualizar no funciona: 
+         */
+        let completado = argv.completado;
+        if (!completado) {
+            completado = argv.c;
+        }
+        if (!completado) {
+            completado = argv.completada;
+        }
+        /*
+         * Fin de asignación extra
+         */
+        let actualizado = porHacer.actualizar(descripcion, completado);
+        let estadoFinal = (porHacer.obtenerEstadoActividad(completado) ? colors.green('Completada') : colors.red('Pendiente'));
         //console.log(estadoFinal);
         if (actualizado)
-            console.log(`Tarea ${argv.descripcion} actualizada como ${estadoFinal}.`);
+            console.log(`Tarea ${descripcion} actualizada como ${estadoFinal}.`);
         else
             console.log("La tarea no pudo ser actualizada. Intente de nuevo, por favor.")
         break;
