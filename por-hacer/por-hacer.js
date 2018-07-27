@@ -83,8 +83,8 @@ const getListado = (cuales) => {
 
 const actualizar = (descripcion, completado = true) => {
     cargarDB();
-    console.log(descripcion);
-    console.log(completado);
+    //console.log(descripcion);
+    //console.log(completado);
     let index = listadoPendientes.findIndex(tarea => tarea.descripcion === descripcion);
 
     let estado = obtenerEstadoActividad(completado);
